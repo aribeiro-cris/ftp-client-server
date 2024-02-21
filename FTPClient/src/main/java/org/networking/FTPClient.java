@@ -1,4 +1,4 @@
-package org.example;
+package org.networking;
 
 import java.io.*;
 import java.net.Socket;
@@ -12,6 +12,10 @@ public class FTPClient {
     private String clientRoot = "./clientRoot/";
     private String END_OF_MESSAGE = "ENDOFMESSAGE";
 
+    /**
+     * This method has the main goal of establish connection between server and client
+     * It also instantiates the buffers readers and buffer writer
+     */
     public void init(String ip, int port) {
         try {
             socket = new Socket(ip, port);
@@ -26,6 +30,11 @@ public class FTPClient {
         }
     }
 
+    /**
+     * This method is used to execute PUT command;
+     * PUT command is responsible uploading a file from the client side to the server
+     * @param line represents the input from the client
+     */
     public void executePUTCommand(String line) {
         try {
             String fileName = line.substring(4).trim();
@@ -51,6 +60,11 @@ public class FTPClient {
         }
     }
 
+    /**
+     * This method is used to execute GET command;
+     * GET command is responsible for get a file from the server and add it on the client side
+     * @param line represents the input from the client
+     */
     public void executeGETCommand(String line) {
         try {
             String fileName = line.substring(4).trim();
@@ -71,9 +85,16 @@ public class FTPClient {
         }
     }
 
+    /**
+     * Constructor of the FTPClient
+     */
     public FTPClient() {
 
     }
+
+    /**
+     * Method responsible to send input to the server according to the commands
+     */
     public void clientCom() {
         String line = "";
         String serverEcho = "";
@@ -107,6 +128,9 @@ public class FTPClient {
         }
     }
 
+    /**
+     * Method responsible to close the buffers readers and buffer writer
+     */
     public void closingSocketAndBuffers() {
         try {
             inputBufferedReader.close();

@@ -1,4 +1,4 @@
-package org.example;
+package org.networking;
 
 import org.junit.jupiter.api.*;
 
@@ -53,6 +53,7 @@ class FTPClientTest {
     @Test
     public void shouldTerminateConnectionWithBYECommand() throws IOException {
         when(mockKeyboardInputBufferedReader.readLine()).thenReturn("BYE");
+
         // Method to test
         ftpClient.closingSocketAndBuffers();
         mockSocket.close();
@@ -62,6 +63,7 @@ class FTPClientTest {
     public void shouldTerminateConnectionWithQUITCommand() throws IOException {
 
         when(mockKeyboardInputBufferedReader.readLine()).thenReturn("QUIT");
+
         // Method to test
         ftpClient.closingSocketAndBuffers();
         mockSocket.close();
@@ -71,6 +73,7 @@ class FTPClientTest {
     public void shouldTerminateConnectionWithDISCONNECTCommand() throws IOException{
 
         when(mockKeyboardInputBufferedReader.readLine()).thenReturn("DISCONNECT");
+
         // Method to test
         ftpClient.closingSocketAndBuffers();
         mockSocket.close();

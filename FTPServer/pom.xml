@@ -45,7 +45,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>main.java.org.example.FTPServer</mainClass> <!-- path to the main class of your project -->
+                            <mainClass>main.java.org.networking.FTPServer</mainClass> <!-- path to the main class of your project -->
                         </manifest>
                     </archive>
                     <descriptorRefs>

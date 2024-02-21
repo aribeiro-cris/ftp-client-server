@@ -1,4 +1,4 @@
-package org.example;
+package org.networking;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -18,6 +18,11 @@ public class FTPServer {
     private InputStream inputStream;
     private OutputStream outputStream;
     private String fileName;
+
+    /**
+     * This method has the main goal of establish connection between server and client
+     * It also instantiates the buffer reader and writer
+     */
     public void init(int port) {
         try {
             //Create server socket and listen
@@ -38,6 +43,10 @@ public class FTPServer {
         }
     }
 
+    /**
+     * This method is used to execute the BYE, QUIT and DISCONNECT command
+     * Method to terminate connection between client and server
+     */
     public void terminateConnection() {
         try {
             System.out.println("Connection terminated.");
@@ -48,6 +57,9 @@ public class FTPServer {
         }
     }
 
+    /**
+     * Method that represents the end of message send between client and server
+     */
     public void endOfMessage() {
         try {
             outputBufferedWriter.write(END_OF_MESSAGE);
@@ -58,6 +70,11 @@ public class FTPServer {
         }
     }
 
+    /**
+     * This method is used to execute PUT command;
+     * PUT command is responsible uploading a file from the client side to the server
+     * @param input represents the message received from the client
+     */
     public void executePUTCommand(String input) {
         try{
             fileName = input.substring(3).trim(); //PUT theNewColossus.txt
@@ -79,6 +96,11 @@ public class FTPServer {
         }
     }
 
+    /**
+     * This method is used to execute GET command;
+     * GET command is responsible for get a file from the server and add it on the client side
+     * @param input represents the message received from the client
+     */
     public void executeGETCommand(String input) {
         try {
             fileName = input.substring(3).trim(); //GET theRaven.txt
@@ -101,6 +123,11 @@ public class FTPServer {
             io.printStackTrace();
         }
     }
+
+    /**
+     * This method is used to execute the LS command;
+     * LS is responsible to list files available on the server
+     */
     public void sendLSResponse() {
         try{
             fileOfServerRoot = serverRootPath.list();
@@ -114,6 +141,10 @@ public class FTPServer {
         }
     }
 
+    /**
+     * This method is used to execute the HELP command;
+     * HELP is responsible to show available commands on the client side
+     */
     public void sendHELPResponse() {
         try {
             outputBufferedWriter.write(outputHelp);
@@ -122,6 +153,12 @@ public class FTPServer {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * This method is used to execute the MKDIR command;
+     * MKDIR is responsible to create a directory on the server
+     * @param input represents the message received from the client
+     */
     public void executeMkdirCommand(String input) {
         try {
             String pathToDirectory = input.substring(5).trim(); //
@@ -139,9 +176,17 @@ public class FTPServer {
         }
     }
 
+    /**
+     * Constructor of the FTPServer
+     */
+
     public FTPServer() {
 
     }
+
+    /**
+     * Method responsible to received input from the client according to the commands
+     */
     public void serverCom() {
         try {
             //Get input from client
@@ -201,10 +246,6 @@ public class FTPServer {
 
     public void setOutputStream(OutputStream outputStream) {
         this.outputStream = outputStream;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
     }
 
     public static void main(String[] args) {

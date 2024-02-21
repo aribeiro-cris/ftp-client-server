@@ -1,4 +1,4 @@
-package org.example;
+package org.networking;
 
 import org.junit.jupiter.api.*;
 
@@ -51,14 +51,11 @@ class FTPServerTest {
     @Test
     public void shouldEstablishConnectionWithClient() throws IOException {
         Assertions.assertNotNull(new Socket("localhost", 55555));
-        //Assertions.assertTrue(futureClientConnection.isDone());
     }
 
     @Test
     public void shouldNotEstablishConnectionWithClient() throws IOException {
         Assertions.assertThrows(IOException.class, () -> new Socket("localhost", 55900));
-        //Assertions.assertTrue(futureClientConnection.cancel(true));
-        //mockServerSocket.close();
     }
 
     @Test
@@ -66,8 +63,6 @@ class FTPServerTest {
         when(mockInputBufferedReader.readLine()).thenReturn("BYE");
         ftpServer.terminateConnection();
         futureClientConnection.cancel(true);
-        //mockServerSocket.close();
-//        verify(mockServerSocket).close();
     }
 
     @Test
@@ -75,8 +70,6 @@ class FTPServerTest {
         when(mockInputBufferedReader.readLine()).thenReturn("QUIT");
         ftpServer.terminateConnection();
         futureClientConnection.cancel(true);
-        //mockServerSocket.close();
-//        verify(mockServerSocket).close();
     }
 
     @Test
@@ -84,8 +77,6 @@ class FTPServerTest {
         when(mockInputBufferedReader.readLine()).thenReturn("DISCONNECT");
         ftpServer.terminateConnection();
         futureClientConnection.cancel(true);
-        //mockServerSocket.close();
-//        verify(mockServerSocket).close();
     }
 
     @Test
@@ -114,10 +105,6 @@ class FTPServerTest {
                 .thenReturn(END_OF_MESSAGE);
 
         mockOutputBufferedWriter.write(fileContent);
-
-        //ftpServer.executePUTCommand(input);
-        //verify(mockInputBufferedReader).read();
-        //verify(mockOutputBufferedWriter).flush();
     }
 
     @Test
