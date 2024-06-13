@@ -44,14 +44,15 @@ public class FTPServer {
     }
 
     /**
-     * This method is used to execute the BYE, QUIT and DISCONNECT command
      * Method to terminate connection between client and server
      */
     public void terminateConnection() {
         try {
             System.out.println("Connection terminated.");
-            inputStream.close();
-            serverSocket.close();
+            if (inputBufferedReader != null) inputBufferedReader.close();
+            if (outputBufferedWriter != null) outputBufferedWriter.close();
+            if (clientSocket != null && !clientSocket.isClosed()) clientSocket.close();
+            if (serverSocket != null && !serverSocket.isClosed()) serverSocket.close();
         } catch (IOException io) {
             io.printStackTrace();
         }
@@ -174,14 +175,6 @@ public class FTPServer {
         } catch(IOException io) {
             io.printStackTrace();
         }
-    }
-
-    /**
-     * Constructor of the FTPServer
-     */
-
-    public FTPServer() {
-
     }
 
     /**

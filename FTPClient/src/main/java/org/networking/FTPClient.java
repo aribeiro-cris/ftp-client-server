@@ -36,19 +36,20 @@ public class FTPClient {
      * @param line represents the input from the client
      */
     public void executePUTCommand(String line) {
-        try {
-            String fileName = line.substring(4).trim();
-            System.out.println("Client needs to PUT file on the server: " + fileName);
-            File newFileCreated = new File(clientRoot + fileName);
+        String fileName = line.substring(4).trim();
+        System.out.println("Client needs to PUT file on the server: " + fileName);
+        File newFileCreated = new File(clientRoot + fileName);
 
-            if (!newFileCreated.exists()) {
-                System.out.println("File doesn't exist.");
-            }
-            System.out.println("Starting file upload...");
-            Scanner reader = new Scanner(newFileCreated); //reads the file
-            while (reader.hasNextLine()) {
-                String data = reader.nextLine();
-                System.out.println(data);
+        if (!newFileCreated.exists()) {
+            System.out.println("File doesn't exist.");
+            return;
+        }
+
+        System.out.println("Starting file upload...");
+
+        try (BufferedReader fileReader = new BufferedReader(new FileReader(newFileCreated))) {
+            String data;
+            while ((data = fileReader.readLine()) != null) {
                 outPutBufferedWriter.write(data);
                 outPutBufferedWriter.newLine();
             }
@@ -66,10 +67,10 @@ public class FTPClient {
      * @param line represents the input from the client
      */
     public void executeGETCommand(String line) {
+        String fileName = line.substring(4).trim();
+        System.out.println("The file asked with the GET command was: " + fileName);
+        File newFileName = new File(clientRoot + fileName);
         try {
-            String fileName = line.substring(4).trim();
-            System.out.println("The file asked with the GET command was: " + fileName);
-            File newFileName = new File(clientRoot + fileName);
             newFileName.createNewFile();
             FileWriter fileWriter = new FileWriter(newFileName);
             while(!line.equals(END_OF_MESSAGE)){
@@ -83,13 +84,6 @@ public class FTPClient {
         } catch (IOException io) {
             io.printStackTrace();
         }
-    }
-
-    /**
-     * Constructor of the FTPClient
-     */
-    public FTPClient() {
-
     }
 
     /**
@@ -125,6 +119,8 @@ public class FTPClient {
             closingSocketAndBuffers();
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } finally {
+            closingSocketAndBuffers();
         }
     }
 
@@ -139,7 +135,7 @@ public class FTPClient {
             System.out.println("Connection terminated.");
             socket.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
